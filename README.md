@@ -89,13 +89,13 @@ In the cli!
 
 
 ```sh
-curl https://github.com/alexandrelam/blame-detective-cli/blob/main/blamed.sh -o "$HOME/.local/bin/blamed.sh"
+curl https://github.com/alexandrelam/blame-detective-cli/blob/main/blamed.sh -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
 ```
 
 ## Uninstall
 
 ```sh
-rm "$HOME/.local/bin/blamed.sh"
+rm "$HOME/.local/bin/blamed"
 ```
 
 ## Usage

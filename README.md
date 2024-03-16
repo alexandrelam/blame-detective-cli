@@ -25,7 +25,6 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-<img src="https://github.com/alexandrelam/blame-detective-cli/assets/25727549/79fa934c-66a9-4f62-a277-01a02fc2bd44" alt="Logo" height="35">
 
 <!-- PROJECT LOGO -->
 <br />

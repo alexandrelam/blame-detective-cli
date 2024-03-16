@@ -88,7 +88,7 @@ In the cli!
 
 
 ```sh
-curl https://github.com/alexandrelam/blame-detective-cli/blob/main/blamed.sh -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
+curl https://raw.githubusercontent.com/alexandrelam/blame-detective-cli/main/blamed.sh -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
 ```
 
 ## Uninstall

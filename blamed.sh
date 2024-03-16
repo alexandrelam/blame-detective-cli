@@ -1,14 +1,14 @@
 #!/bin/sh
 
-local from=$1
-local author=$2
-local to=$3
-local editor=$4
+from=$1
+author=$2
+to=$3
+editor=$4
 
 # if from or to is not provided throw error
 if [ -z "$from" ]; then
     echo "from commit hash is required" 1>&2
-    return 1
+    exit 1
 fi
 
 #if to is not provided, then it is the last commit

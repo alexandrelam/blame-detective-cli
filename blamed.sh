@@ -1,25 +1,33 @@
 #!/bin/bash
 
 usage() {
-    echo "Usage: $0 -f <from_commit_hash> [-a <author>] [-t <to_commit_hash>] [-e <editor>]"
+    echo "Usage: $0 [-f <from_commit_hash>] [-s <since_date>] [-a <author>] [-t <to_commit_hash>] [-u <until_date>] [-e <editor>]"
     exit 1
 }
 
 from=""
+since=""
 author=""
 to="HEAD"
+until=""
 editor="code"
 
-while getopts "f:a:t:e:" opt; do
+while getopts "f:s:a:t:u:e:" opt; do
     case $opt in
         f)
             from="$OPTARG"
+            ;;
+        s)
+            since="$OPTARG"
             ;;
         a)
             author="$OPTARG"
             ;;
         t)
             to="$OPTARG"
+            ;;
+        u)
+            until="$OPTARG"
             ;;
         e)
             editor="$OPTARG"
@@ -35,15 +43,32 @@ while getopts "f:a:t:e:" opt; do
     esac
 done
 
-# Check if from is provided
-if [ -z "$from" ]; then
-    echo "Error: 'from' commit hash is required." >&2
+# Check if either from or since is provided
+if [ -z "$from" ] && [ -z "$since" ]; then
+    echo "Error: Either 'from' commit hash or 'since' date must be defined." >&2
     usage
 fi
 
-# If author is not provided, then do not filter by author
-if [ -z "$author" ]; then
-    git log --pretty=format:%H "$from".."$to" | while read -r commit_hash; do git show "$commit_hash"; done | "$editor" -
-else
-    git log --author="$author" --pretty=format:%H "$from".."$to" | while read -r commit_hash; do git show "$commit_hash"; done | "$editor" -
+log_command="git log  --pretty=format:%H"
+
+if [ -n "$author" ]; then
+    log_command="$log_command --author=\"$author\""
 fi
+
+if [ -n "$since" ]; then
+    log_command="$log_command --since=\"$since\""
+fi
+
+if [ -z "$until" ]; then
+    until="now"
+fi
+
+if [ -n "$until" ]; then
+    log_command="$log_command --until=\"$until\""
+fi
+
+if [ -n "$from" ]; then
+    log_command="$log_command $from..$to"
+fi
+
+$log_command | while read -r commit_hash; do git show "$commit_hash"; done | "$editor" -

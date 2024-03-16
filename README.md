@@ -104,12 +104,13 @@ Blame Detective offers a range of powerful features to streamline the bug tracki
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Options
--f <from_commit_hash>: Specifies the starting commit hash for viewing the log.
--s <since_date>: Specifies the starting date for viewing the log.
--a <author>: Specifies the author of the commits to filter.
--t <to_commit_hash>: Specifies the ending commit hash for viewing the log (default: HEAD).
--u <until_date>: Specifies the ending date for viewing the log (default: now).
--e <editor>: Specifies the text editor to use for displaying commit changes (default: code).
+
+- -f <from_commit_hash>: Specifies the starting commit hash for viewing the log.
+- -s <since_date>: Specifies the starting date for viewing the log.
+- -a <author>: Specifies the author of the commits to filter.
+- -t <to_commit_hash>: Specifies the ending commit hash for viewing the log (default: HEAD).
+- -u <until_date>: Specifies the ending date for viewing the log (default: now).
+- -e <editor>: Specifies the text editor to use for displaying commit changes (default: code).
 
 ### Example
 

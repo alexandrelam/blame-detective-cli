@@ -1,29 +1,49 @@
-#!/bin/sh
+#!/bin/bash
 
-from=$1
-author=$2
-to=$3
-editor=$4
-
-# if from or to is not provided throw error
-if [ -z "$from" ]; then
-    echo "from commit hash is required" 1>&2
+usage() {
+    echo "Usage: $0 -f <from_commit_hash> [-a <author>] [-t <to_commit_hash>] [-e <editor>]"
     exit 1
+}
+
+from=""
+author=""
+to="HEAD"
+editor="code"
+
+while getopts "f:a:t:e:" opt; do
+    case $opt in
+        f)
+            from="$OPTARG"
+            ;;
+        a)
+            author="$OPTARG"
+            ;;
+        t)
+            to="$OPTARG"
+            ;;
+        e)
+            editor="$OPTARG"
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            usage
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            usage
+            ;;
+    esac
+done
+
+# Check if from is provided
+if [ -z "$from" ]; then
+    echo "Error: 'from' commit hash is required." >&2
+    usage
 fi
 
-#if to is not provided, then it is the last commit
-if [ -z "$to" ]; then
-    to="HEAD"
-fi
-
-#if editor is not provided, then use vscode
-if [ -z "$editor" ]; then
-    editor="code"
-fi
-
-# if author is not provided, then do not filter by author
+# If author is not provided, then do not filter by author
 if [ -z "$author" ]; then
-    git log --pretty=format:%H $from..$to | while read commit_hash; do git show "$commit_hash"; done | "$editor" -
+    git log --pretty=format:%H "$from".."$to" | while read -r commit_hash; do git show "$commit_hash"; done | "$editor" -
 else
-    git log --author="$author" --pretty=format:%H $from..$to | while read commit_hash; do git show "$commit_hash"; done | "$editor" -
+    git log --author="$author" --pretty=format:%H "$from".."$to" | while read -r commit_hash; do git show "$commit_hash"; done | "$editor" -
 fi

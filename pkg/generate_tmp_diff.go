@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func GenerateTmpDiff(parsedFlags ParsedFlags) {
+func GenerateTmpDiff(parsedFlags ParsedFlags) string {
 	var command string = "git log  --pretty=format:%H"
 
 	if parsedFlags.from != "" {
@@ -35,6 +35,8 @@ func GenerateTmpDiff(parsedFlags ParsedFlags) {
 	command += " | while read -r commit_hash; do git show \"$commit_hash\"; done > " + tmpFilePath
 	fmt.Println(command)
 	exec.Command("sh", "-c", command).Run()
+
+	return tmpFilePath
 }
 
 func generateTmpFilePath() string {
@@ -45,6 +47,6 @@ func generateTmpFilePath() string {
 		panic(err)
 	}
 
-	filepath := tmpDir + "/diff.txt"
+	filepath := tmpDir + "/whole.diff"
 	return filepath
 }

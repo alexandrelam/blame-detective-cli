@@ -13,7 +13,8 @@ func main() {
 	var parsedFlags = pkg.ParseFlags()
 
 	// This generates a tmp file with all the diffs
-	pkg.GenerateTmpDiff(parsedFlags)
+	var tmpFilePath = pkg.GenerateTmpDiff(parsedFlags)
 
 	// We parse this file to reconstruct the folder structure
+	pkg.GenerateDiffFolder(tmpFilePath)
 }

@@ -25,12 +25,12 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-<img src="https://github.com/alexandrelam/blame-detective/assets/25727549/79fa934c-66a9-4f62-a277-01a02fc2bd44" alt="Logo" height="35">
+<img src="https://github.com/alexandrelam/blame-detective-cli/assets/25727549/79fa934c-66a9-4f62-a277-01a02fc2bd44" alt="Logo" height="35">
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/alexandrelam/blame-detective">
+  <a href="https://github.com/alexandrelam/blame-detective-cli">
     <img src="public/detective.png" alt="Logo" width="120" height="120">
   </a>
 
@@ -39,12 +39,12 @@
   <p align="center">
     Empowering Developers to Track and Expose Code Alterations! 🕵️
     <br />
-    <a href="https://github.com/alexandrelam/blame-detective"><strong>Explore the docs </strong></a>
+    <a href="https://github.com/alexandrelam/blame-detective-cli"><strong>Explore the docs </strong></a>
     <br />
     <br />
-    <a href="https://github.com/alexandrelam/blame-detective/issues">Report Bug</a>
+    <a href="https://github.com/alexandrelam/blame-detective-cli/issues">Report Bug</a>
     ·
-    <a href="https://github.com/alexandrelam/blame-detective/issues">Request Feature</a>
+    <a href="https://github.com/alexandrelam/blame-detective-cli/issues">Request Feature</a>
   </p>
 </div>
 
@@ -85,12 +85,17 @@ In the cli!
 
 <!-- GETTING STARTED -->
 
-## Getting Started
+## Install
 
-Install
 
 ```sh
-curl -s https://raw.githubusercontent.com/alexandrelam/blame-detective/main/install.sh | bash
+curl https://github.com/alexandrelam/blame-detective-cli/blob/main/blamed.sh -o "$HOME/.local/bin/blamed.sh"
+```
+
+## Uninstall
+
+```sh
+rm "$HOME/.local/bin/blamed.sh"
 ```
 
 ## Usage
@@ -101,18 +106,10 @@ Blame Detective offers a range of powerful features to streamline the bug tracki
 
 <!-- ROADMAP -->
 
-## Other
-
-Open git diff from authors in vscode
-
-```sh
-git log --author="Alex\|Vincent" --pretty=format:%H | while read commit_hash; do git show "$commit_hash"; done | code -c "set ft=diff" -
-```
-
 ## Roadmap
 
 
-See the [open issues](https://github.com/alexandrelam/blame-detective/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/alexandrelam/blame-detective-cli/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -145,7 +142,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Project Link: [https://github.com/alexandrelam/blame-detective](https://github.com/alexandrelam/blame-detective)
+Project Link: [https://github.com/alexandrelam/blame-detective-cli](https://github.com/alexandrelam/blame-detective-cli)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -153,23 +150,23 @@ Project Link: [https://github.com/alexandrelam/blame-detective](https://github.c
 
 ## Acknowledgments
 
-- [me](https://github.com/alexandrelam/blame-detective)
+- [me](https://github.com/alexandrelam/blame-detective-cli)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/alexandrelam/blame-detective.svg?style=for-the-badge
-[contributors-url]: https://github.com/alexandrelam/blame-detective/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/alexandrelam/blame-detective.svg?style=for-the-badge
-[forks-url]: https://github.com/alexandrelam/blame-detective/network/members
-[stars-shield]: https://img.shields.io/github/stars/alexandrelam/blame-detective.svg?style=for-the-badge
-[stars-url]: https://github.com/alexandrelam/blame-detective/stargazers
-[issues-shield]: https://img.shields.io/github/issues/alexandrelam/blame-detective.svg?style=for-the-badge
-[issues-url]: https://github.com/alexandrelam/blame-detective/issues
-[license-shield]: https://img.shields.io/github/license/alexandrelam/blame-detective.svg?style=for-the-badge
-[license-url]: https://github.com/alexandrelam/blame-detective/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/alexandrelam/blame-detective-cli.svg?style=for-the-badge
+[contributors-url]: https://github.com/alexandrelam/blame-detective-cli/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/alexandrelam/blame-detective-cli.svg?style=for-the-badge
+[forks-url]: https://github.com/alexandrelam/blame-detective-cli/network/members
+[stars-shield]: https://img.shields.io/github/stars/alexandrelam/blame-detective-cli.svg?style=for-the-badge
+[stars-url]: https://github.com/alexandrelam/blame-detective-cli/stargazers
+[issues-shield]: https://img.shields.io/github/issues/alexandrelam/blame-detective-cli.svg?style=for-the-badge
+[issues-url]: https://github.com/alexandrelam/blame-detective-cli/issues
+[license-shield]: https://img.shields.io/github/license/alexandrelam/blame-detective-cli.svg?style=for-the-badge
+[license-url]: https://github.com/alexandrelam/blame-detective-cli/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/alexandre-lam-74787b191/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB

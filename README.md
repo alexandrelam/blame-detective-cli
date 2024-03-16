@@ -114,10 +114,10 @@ Blame Detective offers a range of powerful features to streamline the bug tracki
 
 ### Example
 
-View commits since a specific date by a particular author:
+View commits since a specific date by a particular authors:
 
 ```bash
-blamed -s "2023-01-01" -a "John Doe"
+blamed -s "2023-01-01" -a "Alexandre Lam\|John Doe"
 ```
 View commits between two specific commit hashes:
 

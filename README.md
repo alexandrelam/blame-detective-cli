@@ -116,12 +116,12 @@ Blame Detective offers a range of powerful features to streamline the bug tracki
 View commits since a specific date by a particular author:
 
 ```bash
-./git_log_viewer.sh -s "2023-01-01" -a "John Doe"
+blamed -s "2023-01-01" -a "John Doe"
 ```
 View commits between two specific commit hashes:
 
 ```bash
-./git_log_viewer.sh -f abc123 -t def456
+blamed -f abc123 -t def456
 ```
 
 ### Note

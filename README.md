@@ -104,6 +104,34 @@ Blame Detective offers a range of powerful features to streamline the bug tracki
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+```sh
+blamed <FROM_COMMIT_HASH> <AUTHORS> <TO_COMMIT_HASH> <EDITOR>
+```
+
+```sh
+blamed 6a5bb5669aacecc9873c7341529534486f15e404
+```
+
+```sh
+blamed 6a5bb5669aacecc9873c7341529534486f15e404 "Alexandre Lam\|Vincent Lam"
+```
+
+```sh
+blamed 6a5bb5669aacecc9873c7341529534486f15e404 "Alexandre Lam\|Vincent Lam" 6a5bb5669aacecc9873c7341529534486f15e404 "nvim"
+```
+
+### Edit text editor
+
+Edit the default text editor in the script
+
+```sh
+#if editor is not provided, then use vscode
+if [ -z "$editor" ]; then
+    editor="code"
+fi
+```
+
 <!-- ROADMAP -->
 
 ## Roadmap

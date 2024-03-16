@@ -103,22 +103,33 @@ Blame Detective offers a range of powerful features to streamline the bug tracki
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Options
+-f <from_commit_hash>: Specifies the starting commit hash for viewing the log.
+-s <since_date>: Specifies the starting date for viewing the log.
+-a <author>: Specifies the author of the commits to filter.
+-t <to_commit_hash>: Specifies the ending commit hash for viewing the log (default: HEAD).
+-u <until_date>: Specifies the ending date for viewing the log (default: now).
+-e <editor>: Specifies the text editor to use for displaying commit changes (default: code).
 
-```sh
-blamed <FROM_COMMIT_HASH> <AUTHORS> <TO_COMMIT_HASH> <EDITOR>
+### Example
+
+View commits since a specific date by a particular author:
+
+```bash
+./git_log_viewer.sh -s "2023-01-01" -a "John Doe"
+```
+View commits between two specific commit hashes:
+
+```bash
+./git_log_viewer.sh -f abc123 -t def456
 ```
 
-```sh
-blamed 6a5bb5669aacecc9873c7341529534486f15e404
-```
+### Note
+Either a starting commit hash (-f) or a starting date (-s) must be provided.
+If an ending date (-u) is not provided, it defaults to the current date.
+The script uses the git log command to generate the commit history.
+The commits and their changes are displayed using the specified text editor.
 
-```sh
-blamed 6a5bb5669aacecc9873c7341529534486f15e404 "Alexandre Lam\|Vincent Lam"
-```
-
-```sh
-blamed 6a5bb5669aacecc9873c7341529534486f15e404 "Alexandre Lam\|Vincent Lam" 6a5bb5669aacecc9873c7341529534486f15e404 "nvim"
-```
 
 ### Edit text editor
 

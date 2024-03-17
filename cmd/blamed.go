@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os/exec"
 
 	"github.com/alexandrelam/blame-detective-cli/pkg"
 )
@@ -18,5 +19,9 @@ func main() {
 	// We parse this file to reconstruct the folder structure
 	pkg.GenerateDiffFolder(tmpFilePath, tmpDir)
 
+	// Open vscode with the folder
+	exec.Command("code", tmpDir).Run()
+
+	// We print the path of the tmp file
 	fmt.Println(tmpFilePath)
 }

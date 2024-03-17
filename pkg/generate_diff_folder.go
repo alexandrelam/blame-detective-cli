@@ -62,6 +62,12 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 
 	}
 
+	// Delete whole.diff
+	err = os.Remove(tmpFilePath)
+	if err != nil {
+		fmt.Println("Error deleting whole.diff:", err)
+	}
+
 	// Check for any errors encountered during scanning
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error scanning file:", err)

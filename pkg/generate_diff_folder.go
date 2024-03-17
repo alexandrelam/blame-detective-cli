@@ -55,7 +55,7 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 			var lineToWrite string = line
 
 			if isDiffTitle(line) && commitHash != "" && author != "" && date != "" {
-				lineToWrite = line + " | " + commitHash + " | " + author + " | " + date
+				lineToWrite = line[:3] + " " + author + " | " + commitHash + " | " + date
 			}
 
 			_, err = file.WriteString(lineToWrite + "\n")
@@ -93,7 +93,7 @@ func isDiffTitle(line string) bool {
 	if len(line) < 3 {
 		return false
 	}
-	return line[:3] == "+++"
+	return line[:3] == "+++" || line[:3] == "---"
 }
 
 func hasAuthor(line string) bool {

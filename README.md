@@ -85,7 +85,6 @@ In the cli!
 
 - VSCode (or edit the file editor in `/home/alex/Documents/blame-detective-cli/cmd/blamed.go`)
 
-
 <!-- GETTING STARTED -->
 
 ## Install
@@ -102,6 +101,11 @@ Mac ARM
 curl https://github.com/alexandrelam/blame-detective-cli/raw/main/macos-blamed -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
 ```
 
+Windows
+
+```sh
+curl no-windows-🤡
+```
 
 ## Uninstall
 
@@ -131,6 +135,7 @@ View commits since a specific date by a particular authors:
 ```bash
 blamed -since "2023-01-01" -author "Alexandre Lam\|John Doe"
 ```
+
 View commits between two specific commit hashes:
 
 ```bash
@@ -138,14 +143,13 @@ blamed -from abc123 -to def456
 ```
 
 ### Note
+
 Either a starting commit hash (-f) or a starting date (-s) must be provided.
 If an ending date (-u) is not provided, it defaults to the current date.
 The script uses the git log command to generate the commit history.
 The commits and their changes are displayed using the specified text editor.
 
-
 ## Roadmap
-
 
 See the [open issues](https://github.com/alexandrelam/blame-detective-cli/issues) for a full list of proposed features (and known issues).
 

@@ -86,7 +86,7 @@ func getCommitFilePath(line string) string {
 	parts := strings.Split(line, " ")
 	if len(parts) == 4 {
 		fromPath := strings.TrimPrefix(parts[2], "a/")
-		return fromPath
+		return strings.TrimSpace(fromPath) + ".diff"
 	}
 	return ""
 }

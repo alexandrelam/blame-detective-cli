@@ -92,13 +92,13 @@ In the cli!
 Linux
 
 ```sh
-curl https://github.com/alexandrelam/blame-detective-cli/raw/main/linux-blamed -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
+curl -L https://github.com/alexandrelam/blame-detective-cli/raw/main/linux-blamed -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
 ```
 
 Mac ARM
 
 ```sh
-curl https://github.com/alexandrelam/blame-detective-cli/raw/main/macos-blamed -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
+curl -L https://github.com/alexandrelam/blame-detective-cli/raw/main/macos-blamed -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
 ```
 
 Windows

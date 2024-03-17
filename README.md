@@ -81,15 +81,27 @@ Blame Detective is a highly efficient and user-friendly application designed to 
 
 In the cli!
 
+## Prerequisites
+
+- VSCode (or edit the file editor in `/home/alex/Documents/blame-detective-cli/cmd/blamed.go`)
+
 
 <!-- GETTING STARTED -->
 
 ## Install
 
+Linux
 
 ```sh
-curl https://github.com/alexandrelam/blame-detective-cli/raw/main/blamed -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
+curl https://github.com/alexandrelam/blame-detective-cli/raw/main/linux-blamed -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
 ```
+
+Mac ARM
+
+```sh
+curl https://github.com/alexandrelam/blame-detective-cli/raw/main/macos-blamed -o "$HOME/.local/bin/blamed" && chmod +x "$HOME/.local/bin/blamed"
+```
+
 
 ## Uninstall
 
@@ -105,24 +117,24 @@ Blame Detective offers a range of powerful features to streamline the bug tracki
 
 ### Options
 
-- -f <from_commit_hash>: Specifies the starting commit hash for viewing the log.
-- -s <since_date>: Specifies the starting date for viewing the log.
-- -a <author>: Specifies the author of the commits to filter.
-- -t <to_commit_hash>: Specifies the ending commit hash for viewing the log (default: HEAD).
-- -u <until_date>: Specifies the ending date for viewing the log (default: now).
-- -e <editor>: Specifies the text editor to use for displaying commit changes (default: code).
+- -from <from_commit_hash>: Specifies the starting commit hash for viewing the log.
+- -since <since_date>: Specifies the starting date for viewing the log.
+- -author <author>: Specifies the author of the commits to filter.
+- -to <to_commit_hash>: Specifies the ending commit hash for viewing the log (default: HEAD).
+- -until <until_date>: Specifies the ending date for viewing the log (default: now).
+- -editor <editor>: Specifies the text editor to use for displaying commit changes (default: code).
 
 ### Example
 
 View commits since a specific date by a particular authors:
 
 ```bash
-blamed -s "2023-01-01" -a "Alexandre Lam\|John Doe"
+blamed -since "2023-01-01" -author "Alexandre Lam\|John Doe"
 ```
 View commits between two specific commit hashes:
 
 ```bash
-blamed -f abc123 -t def456
+blamed -from abc123 -to def456
 ```
 
 ### Note
@@ -131,19 +143,6 @@ If an ending date (-u) is not provided, it defaults to the current date.
 The script uses the git log command to generate the commit history.
 The commits and their changes are displayed using the specified text editor.
 
-
-### Edit text editor
-
-Edit the default text editor in the script
-
-```sh
-#if editor is not provided, then use vscode
-if [ -z "$editor" ]; then
-    editor="code"
-fi
-```
-
-<!-- ROADMAP -->
 
 ## Roadmap
 

@@ -2,7 +2,9 @@ package pkg
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/schollz/progressbar/v3"
@@ -32,21 +34,22 @@ func getNumberOfLinesInFile(filepath string) (int, error) {
 	defer file.Close()
 
 	// Create a scanner to read the file line by line
-	scanner := bufio.NewScanner(file)
+	r := bufio.NewReader(file)
 
-	// Variable to count the lines
+	buf := make([]byte, 32*1024)
 	count := 0
+	lineSep := []byte{'\n'}
 
-	// Read the file line by line and count the lines
-	for scanner.Scan() {
-		count++
+	for {
+		c, err := r.Read(buf)
+		count += bytes.Count(buf[:c], lineSep)
+
+		switch {
+		case err == io.EOF:
+			return count, nil
+
+		case err != nil:
+			return count, err
+		}
 	}
-
-	// Check for any scanning errors
-	if err := scanner.Err(); err != nil {
-		fmt.Println("Error:", err)
-		return 0, err
-	}
-
-	return count, nil
 }

@@ -20,46 +20,44 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 	scanner := bufio.NewScanner(file)
 
 	var filePath string = ""
-	var reset bool = true
-	var tmpAppend string = ""
+	var commitHash string = ""
+	var author string = ""
 
 	// Iterate over each line in the file
 	for scanner.Scan() {
 		line := scanner.Text()
 
 		if hasCommitHash(line) {
-			reset = true
+			commitHash = getCommitHash(line)
+		}
+
+		if hasAuthor(line) {
+			author = getAuthor(line)
 		}
 
 		if hasFilePath(line) {
 			filePath = getCommitFilePath(line)
-			reset = false
 		}
 
-		if reset {
-			tmpAppend += line + "\n"
-		} else {
+		if filePath != "" {
 			// Write to file
 			file, err := getWritefile(filePath, tmpDir)
-			if err != nil {
+			if err != nil || file == nil {
 				fmt.Println("Error creating file:", err)
 				continue
 			}
 
-			if tmpAppend != "" {
-				_, err = file.WriteString(tmpAppend)
-				if err != nil {
-					fmt.Println("Error writing tmpAppend to file:", err)
-				}
-				tmpAppend = ""
+			var lineToWrite string = line
+
+			if isDiffTitle(line) && commitHash != "" && author != "" {
+				lineToWrite = line + " | " + commitHash + " | " + author
 			}
 
-			_, err = file.WriteString(line + "\n")
+			_, err = file.WriteString(lineToWrite + "\n")
 			if err != nil {
 				fmt.Println("Error writing line to file:", err)
 			}
 		}
-
 	}
 
 	// Delete whole.diff
@@ -74,11 +72,39 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 	}
 }
 
+func isDiffTitle(line string) bool {
+	if len(line) < 3 {
+		return false
+	}
+	return line[:3] == "+++"
+}
+
+func hasAuthor(line string) bool {
+	if len(line) < 6 {
+		return false
+	}
+	return line[:6] == "Author"
+}
+
+func getAuthor(line string) string {
+	parts := strings.Split(line, "Author: ")
+	return parts[1]
+}
+
 func hasFilePath(line string) bool {
 	if len(line) < 4 {
 		return false
 	}
 	return line[:4] == "diff"
+}
+
+func getCommitHash(line string) string {
+	if len(line) < 6 {
+		return ""
+	}
+
+	parts := strings.Split(line, "commit")
+	return parts[1]
 }
 
 func hasCommitHash(line string) bool {

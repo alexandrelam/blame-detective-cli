@@ -16,8 +16,10 @@ func main() {
 	// This generates a tmp file with all the diffs
 	var tmpFilePath, tmpDir = pkg.GenerateTmpDiff(parsedFlags)
 
+	bar := pkg.Bar(tmpFilePath)
+
 	// We parse this file to reconstruct the folder structure
-	pkg.GenerateDiffFolder(tmpFilePath, tmpDir)
+	pkg.GenerateDiffFolder(tmpFilePath, tmpDir, bar)
 
 	// Open vscode with the folder
 	exec.Command("code", tmpDir).Run()

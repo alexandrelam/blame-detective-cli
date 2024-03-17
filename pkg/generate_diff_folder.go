@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/schollz/progressbar/v3"
 )
 
-func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
+func GenerateDiffFolder(tmpFilePath string, tmpDir string, bar *progressbar.ProgressBar) {
 	// Open the file
 	file, err := os.Open(tmpFilePath)
 	if err != nil {
@@ -27,6 +29,7 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 	// Iterate over each line in the file
 	for scanner.Scan() {
 		line := scanner.Text()
+		bar.Add(1)
 
 		if hasCommitHash(line) {
 			commitHash = getCommitHash(line)

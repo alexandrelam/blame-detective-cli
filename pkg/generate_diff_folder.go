@@ -22,6 +22,7 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 	var filePath string = ""
 	var commitHash string = ""
 	var author string = ""
+	var date string = ""
 
 	// Iterate over each line in the file
 	for scanner.Scan() {
@@ -39,6 +40,10 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 			filePath = getCommitFilePath(line)
 		}
 
+		if hasDate(line) {
+			date = getDate(line)
+		}
+
 		if filePath != "" {
 			// Write to file
 			file, err := getWritefile(filePath, tmpDir)
@@ -49,8 +54,8 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 
 			var lineToWrite string = line
 
-			if isDiffTitle(line) && commitHash != "" && author != "" {
-				lineToWrite = line + " | " + commitHash + " | " + author
+			if isDiffTitle(line) && commitHash != "" && author != "" && date != "" {
+				lineToWrite = line + " | " + commitHash + " | " + author + " | " + date
 			}
 
 			_, err = file.WriteString(lineToWrite + "\n")
@@ -70,6 +75,18 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string) {
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error scanning file:", err)
 	}
+}
+
+func hasDate(line string) bool {
+	if len(line) < 5 {
+		return false
+	}
+	return line[:5] == "Date:"
+}
+
+func getDate(line string) string {
+	parts := strings.Split(line, "Date:")
+	return strings.TrimSpace(parts[1])
 }
 
 func isDiffTitle(line string) bool {

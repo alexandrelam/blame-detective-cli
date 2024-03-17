@@ -21,6 +21,10 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string, bar *progressbar.Prog
 	// Create a scanner to read the file line by line
 	scanner := bufio.NewScanner(file)
 
+	// Increase buffer size to 2mb
+	buf := []byte{}
+	scanner.Buffer(buf, 2048*1024)
+
 	var filePath string = ""
 	var commitHash string = ""
 	var author string = ""

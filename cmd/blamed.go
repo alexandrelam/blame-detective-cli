@@ -24,6 +24,7 @@ func main() {
 	// Open vscode with the folder
 	exec.Command("code", tmpDir).Run()
 
-	// We print the path of the tmp file
-	fmt.Println(tmpFilePath)
+	output, _ := exec.Command("du", "-sh", tmpDir).Output()
+	fmt.Println("\nFolder size: " + string(output))
+	fmt.Println("Done!")
 }

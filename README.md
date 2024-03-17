@@ -110,7 +110,7 @@ curl no-windows-🤡
 ## Uninstall
 
 ```sh
-rm "$HOME/.local/bin/blamed"
+rm "$HOME/.local/bin/blamed" && rm -rf /tmp/blamed
 ```
 
 ## Usage

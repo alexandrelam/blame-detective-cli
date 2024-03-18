@@ -1,12 +1,66 @@
 package pkg
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
 )
 
 func GenerateTmpDiff(parsedFlags ParsedFlags) (string, string) {
+	tmpCommitFilePath, tmpDir := generateTmpFilePath()
+
+	// Generate a file with all the commits
+	generateAllCommits(parsedFlags, tmpCommitFilePath)
+
+	// Split this file into multiple files with commits
+	// Each one of those file will be picked up by a goroutine
+	// to be processed in parallel
+	generateSplitCommits(tmpCommitFilePath, tmpDir)
+
+	return tmpCommitFilePath, tmpDir
+}
+
+func generateSplitCommits(tmpCommitFilePath string, tmpDir string) {
+	// Read tmpCommitFilePath
+	file, err := os.Open(tmpCommitFilePath)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+	defer file.Close()
+
+	// Create a scanner to read the file line by line
+	scanner := bufio.NewScanner(file)
+
+	count := 0
+	fileIndex := 0
+
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		file, err := GetWritefile(fmt.Sprintf("part_%d", fileIndex), fmt.Sprintf("%s/commits", tmpDir))
+		if err != nil || file == nil {
+			fmt.Println("Error creating file:", err)
+			continue
+		}
+
+		_, err = file.WriteString(line + "\n")
+		if err != nil {
+			fmt.Println("Error writing to file:", err)
+		}
+
+		count++
+
+		if count == 10 {
+			count = 0
+			fileIndex++
+		}
+	}
+
+}
+
+func generateAllCommits(parsedFlags ParsedFlags, tmpFilePath string) {
 	var command string = "git log  --pretty=format:%H"
 
 	if parsedFlags.from != "" {
@@ -31,22 +85,20 @@ func GenerateTmpDiff(parsedFlags ParsedFlags) (string, string) {
 		command += " --author=" + parsedFlags.author
 	}
 
-	tmpFilePath, tmpDir := generateTmpFilePath()
-	command += " | while read -r commit_hash; do git show \"$commit_hash\"; done > " + tmpFilePath
+	command += " > " + tmpFilePath
 	fmt.Println(command)
 	exec.Command("sh", "-c", command).Run()
-
-	return tmpFilePath, tmpDir
 }
 
 func generateTmpFilePath() (string, string) {
 	tmpDir := os.TempDir() + "/blamed/" + GenerateRandomHash()
-	err := os.MkdirAll(tmpDir, 0755)
+	tmpDirCommit := tmpDir + "/commits"
+	err := os.MkdirAll(tmpDirCommit, 0755)
 
 	if err != nil {
 		panic(err)
 	}
 
-	filepath := tmpDir + "/whole.diff"
+	filepath := tmpDirCommit + "/commits"
 	return filepath, tmpDir
 }

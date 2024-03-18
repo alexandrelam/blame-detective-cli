@@ -155,6 +155,7 @@ See the [open issues](https://github.com/alexandrelam/blame-detective-cli/issues
 
 - [ ] Generate batch of whole.diff files
 - [ ] Generate concurently diff folder from batched whole.diff files
+- [ ] Cache query, generate folder name with a hash from the command
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

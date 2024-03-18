@@ -39,7 +39,7 @@ func generateSplitCommits(tmpCommitFilePath string, tmpDir string) {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		file, err := GetWritefile(fmt.Sprintf("part_%d", fileIndex), fmt.Sprintf("%s/commits", tmpDir))
+		file, err := getWritefile(fmt.Sprintf("part_%d", fileIndex), fmt.Sprintf("%s/commits", tmpDir))
 		if err != nil || file == nil {
 			fmt.Println("Error creating file:", err)
 			continue

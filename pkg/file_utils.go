@@ -3,9 +3,10 @@ package pkg
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
-func GetWritefile(filepath string, tmpDir string) (*os.File, error) {
+func getWritefile(filepath string, tmpDir string) (*os.File, error) {
 	newFile := tmpDir + "/" + filepath
 
 	// Check if directory exists
@@ -31,4 +32,9 @@ func GetWritefile(filepath string, tmpDir string) (*os.File, error) {
 	// Otherwise return the file
 	file, _ := os.OpenFile(newFile, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	return file, nil
+}
+
+func getDirFromAbsolutepath(filepath string) string {
+	parts := strings.Split(filepath, "/")
+	return strings.Join(parts[:len(parts)-1], "/")
 }

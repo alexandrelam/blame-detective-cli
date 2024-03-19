@@ -4,18 +4,48 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
-
-	"github.com/schollz/progressbar/v3"
+	"sync"
 )
 
-func GenerateDiffFolder(tmpFilePath string, tmpDir string, bar *progressbar.ProgressBar) {
+func GenerateDiffFolder(rootDirectory string, commitFolderPath string) {
+	// Iterate over each file in the folder
+	files, err := os.ReadDir(commitFolderPath)
+
+	if err != nil {
+		fmt.Println("Error reading directory:", err)
+		return
+	}
+
+	var wg sync.WaitGroup
+	for _, commitFile := range files {
+		if commitFile.IsDir() {
+			continue
+		}
+
+		wg.Add(1)
+		go generateDiffFolderForCommit(commitFolderPath+"/"+commitFile.Name(), rootDirectory, &wg)
+	}
+
+	wg.Wait()
+
+	// Delete the commit folder
+	err = os.RemoveAll(commitFolderPath)
+	if err != nil {
+		fmt.Println("Error deleting folder:", err)
+	}
+}
+
+func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	// Open the file
-	file, err := os.Open(tmpFilePath)
+	file, err := os.Open(commitFilePath)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return
 	}
+
 	defer file.Close()
 
 	// Create a scanner to read the file line by line
@@ -25,63 +55,68 @@ func GenerateDiffFolder(tmpFilePath string, tmpDir string, bar *progressbar.Prog
 	buf := []byte{}
 	scanner.Buffer(buf, 2048*1024)
 
-	var filePath string = ""
-	var commitHash string = ""
-	var author string = ""
-	var date string = ""
-
-	// Iterate over each line in the file
 	for scanner.Scan() {
-		line := scanner.Text()
-		bar.Add(1)
+		commitHash := scanner.Text()
 
-		if hasCommitHash(line) {
-			commitHash = getCommitHash(line)
+		diffs, err := getDiffs(commitHash)
+		if err != nil {
+			fmt.Println("Error getting diffs:", err)
+			continue
 		}
 
-		if hasAuthor(line) {
-			author = getAuthor(line)
-		}
+		var filePath string = ""
+		var author string = ""
+		var date string = ""
 
-		if hasFilePath(line) {
-			filePath = getCommitFilePath(line)
-		}
-
-		if hasDate(line) {
-			date = getDate(line)
-		}
-
-		if filePath != "" {
-			// Write to file
-			file, err := getWritefile(filePath, tmpDir)
-			if err != nil || file == nil {
-				fmt.Println("Error creating file:", err)
-				continue
+		for _, line := range diffs {
+			if hasAuthor(line) {
+				author = getAuthor(line)
 			}
 
-			var lineToWrite string = line
-
-			if isDiffTitle(line) && commitHash != "" && author != "" && date != "" {
-				lineToWrite = line[:3] + " " + author + " | " + commitHash + " | " + date
+			if hasFilePath(line) {
+				filePath = getCommitFilePath(line)
 			}
 
-			_, err = file.WriteString(lineToWrite + "\n")
-			if err != nil {
-				fmt.Println("Error writing line to file:", err)
+			if hasDate(line) {
+				date = getDate(line)
+			}
+
+			if filePath != "" {
+				// Write to file
+				file, err := getWritefile(filePath, directory)
+				if err != nil || file == nil {
+					fmt.Println("Error creating file:", err)
+					continue
+				}
+
+				var lineToWrite string = line
+
+				if isDiffTitle(line) && author != "" && date != "" {
+					lineToWrite = line[:3] + " " + author + " | " + commitHash + " | " + date
+				}
+
+				_, err = file.WriteString(lineToWrite + "\n")
+				if err != nil {
+					fmt.Println("Error writing line to file:", err)
+				}
 			}
 		}
-	}
-
-	// Delete whole.diff
-	err = os.Remove(tmpFilePath)
-	if err != nil {
-		fmt.Println("Error deleting whole.diff:", err)
 	}
 
 	// Check for any errors encountered during scanning
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error scanning file:", err)
 	}
+}
+
+func getDiffs(commitHash string) ([]string, error) {
+	output, err := exec.Command("git", "show", commitHash).Output()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return strings.Split(string(output), "\n"), nil
 }
 
 func hasDate(line string) bool {
@@ -122,22 +157,6 @@ func hasFilePath(line string) bool {
 	return line[:4] == "diff"
 }
 
-func getCommitHash(line string) string {
-	if len(line) < 6 {
-		return ""
-	}
-
-	parts := strings.Split(line, "commit")
-	return parts[1]
-}
-
-func hasCommitHash(line string) bool {
-	if len(line) < 6 {
-		return false
-	}
-	return line[:6] == "commit"
-}
-
 func getCommitFilePath(line string) string {
 	parts := strings.Split(line, " ")
 	if len(parts) == 4 {
@@ -145,37 +164,4 @@ func getCommitFilePath(line string) string {
 		return strings.TrimSpace(fromPath) + ".diff"
 	}
 	return ""
-}
-
-func getWritefile(filepath string, tmpDir string) (*os.File, error) {
-	newFile := tmpDir + "/" + filepath
-
-	// Check if directory exists
-	directory := getDirFromAbsolutepath(newFile)
-	if _, err := os.Stat(directory); os.IsNotExist(err) {
-		// Create the directory
-		err := os.MkdirAll(directory, 0755)
-		if err != nil {
-			fmt.Println("Error creating directory:", err)
-			return nil, err
-		}
-	}
-
-	// Check if the file exists
-	if _, err := os.Stat(newFile); os.IsNotExist(err) {
-		// Create the file
-		_, err := os.Create(newFile)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// Otherwise return the file
-	file, _ := os.OpenFile(newFile, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
-	return file, nil
-}
-
-func getDirFromAbsolutepath(filepath string) string {
-	parts := strings.Split(filepath, "/")
-	return strings.Join(parts[:len(parts)-1], "/")
 }

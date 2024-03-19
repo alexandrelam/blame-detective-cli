@@ -45,7 +45,7 @@ func generateSplitCommits(tmpCommitFilePath string, tmpDir string) {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		file, err := getWritefile(fmt.Sprintf("part_%d", fileIndex), fmt.Sprintf("%s/commits", tmpDir))
+		file, err := getWritefile(fmt.Sprintf("part_%d", fileIndex), fmt.Sprintf("%s/blamed_commits", tmpDir))
 		if err != nil || file == nil {
 			fmt.Println("Error creating file:", err)
 			continue
@@ -98,13 +98,13 @@ func generateAllCommits(parsedFlags ParsedFlags, tmpFilePath string) {
 
 func generateTmpFilePath() (string, string) {
 	tmpDir := os.TempDir() + "/blamed/" + GenerateRandomHash()
-	tmpDirCommit := tmpDir + "/commits"
+	tmpDirCommit := tmpDir + "/blamed_commits"
 	err := os.MkdirAll(tmpDirCommit, 0755)
 
 	if err != nil {
 		panic(err)
 	}
 
-	filepath := tmpDirCommit + "/commits"
+	filepath := tmpDirCommit + "/blamed_commits"
 	return filepath, tmpDir
 }

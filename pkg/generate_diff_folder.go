@@ -24,6 +24,12 @@ func GenerateDiffFolder(rootDirectory string, commitFolderPath string) {
 
 		generateDiffFolderForCommit(commitFolderPath+"/"+commitFile.Name(), rootDirectory)
 	}
+
+	// Delete the commit folder
+	err = os.RemoveAll(commitFolderPath)
+	if err != nil {
+		fmt.Println("Error deleting folder:", err)
+	}
 }
 
 func generateDiffFolderForCommit(commitFilePath string, directory string) {

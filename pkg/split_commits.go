@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-func GenerateTmpDiff(parsedFlags ParsedFlags) (string, string) {
+func GenerateSplitCommitsFolder(parsedFlags ParsedFlags) (string, string) {
 	tmpCommitFilePath, tmpDir := generateTmpFilePath()
 
 	// Generate a file with all the commits
@@ -17,6 +17,12 @@ func GenerateTmpDiff(parsedFlags ParsedFlags) (string, string) {
 	// Each one of those file will be picked up by a goroutine
 	// to be processed in parallel
 	generateSplitCommits(tmpCommitFilePath, tmpDir)
+
+	// Delete original commits file
+	err := os.Remove(tmpCommitFilePath)
+	if err != nil {
+		fmt.Println("Error deleting file:", err)
+	}
 
 	return tmpCommitFilePath, tmpDir
 }

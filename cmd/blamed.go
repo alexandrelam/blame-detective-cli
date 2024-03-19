@@ -14,14 +14,14 @@ func main() {
 	var parsedFlags = pkg.ParseFlags()
 
 	// This generates a tmp file with all the diffs
-	var tmpFilePath, tmpDir = pkg.GenerateTmpDiff(parsedFlags)
+	var tmpFilePath, tmpDir = pkg.GenerateSplitCommitsFolder(parsedFlags)
 
 	fmt.Println(tmpFilePath, tmpDir)
 
 	// bar := pkg.Bar(tmpFilePath)
 
 	// // We parse this file to reconstruct the folder structure
-	// pkg.GenerateDiffFolder(tmpFilePath, tmpDir, bar)
+	pkg.GenerateDiffFolder(tmpDir + "/commits")
 
 	// // Open vscode with the folder
 	// exec.Command("code", tmpDir).Run()

@@ -153,9 +153,11 @@ The commits and their changes are displayed using the specified text editor.
 
 See the [open issues](https://github.com/alexandrelam/blame-detective-cli/issues) for a full list of proposed features (and known issues).
 
-- [ ] Generate batch of whole.diff files
-- [ ] Generate concurently diff folder from batched whole.diff files
+- [x] Generate batch of whole.diff files
+- [x] Generate concurently diff folder from batched whole.diff files
 - [ ] Cache query, generate folder name with a hash from the command
+- [ ] Add .blamedignore config file
+- [ ] Ignore big useless files
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

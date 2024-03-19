@@ -145,22 +145,6 @@ func hasFilePath(line string) bool {
 	return line[:4] == "diff"
 }
 
-func getCommitHash(line string) string {
-	if len(line) < 6 {
-		return ""
-	}
-
-	parts := strings.Split(line, "commit")
-	return parts[1]
-}
-
-func hasCommitHash(line string) bool {
-	if len(line) < 6 {
-		return false
-	}
-	return line[:6] == "commit"
-}
-
 func getCommitFilePath(line string) string {
 	parts := strings.Split(line, " ")
 	if len(parts) == 4 {

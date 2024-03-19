@@ -58,7 +58,7 @@ func generateSplitCommits(tmpCommitFilePath string, tmpDir string) {
 
 		count++
 
-		if count == 10 {
+		if count == 100 {
 			count = 0
 			fileIndex++
 		}

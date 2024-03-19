@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-func GenerateSplitCommitsFolder(parsedFlags ParsedFlags) (string, string) {
+func GenerateSplitCommitsFolder(parsedFlags ParsedFlags) string {
 	tmpCommitFilePath, tmpDir := generateTmpFilePath()
 
 	// Generate a file with all the commits
@@ -24,7 +24,7 @@ func GenerateSplitCommitsFolder(parsedFlags ParsedFlags) (string, string) {
 		fmt.Println("Error deleting file:", err)
 	}
 
-	return tmpCommitFilePath, tmpDir
+	return tmpDir
 }
 
 func generateSplitCommits(tmpCommitFilePath string, tmpDir string) {

@@ -16,9 +16,7 @@ func main() {
 	var parsedFlags = pkg.ParseFlags()
 
 	// This generates a tmp file with all the diffs
-	var tmpFilePath, tmpDir = pkg.GenerateSplitCommitsFolder(parsedFlags)
-
-	fmt.Println(tmpFilePath, tmpDir)
+	var tmpDir = pkg.GenerateSplitCommitsFolder(parsedFlags)
 
 	// // We parse this file to reconstruct the folder structure
 	pkg.GenerateDiffFolder(tmpDir, tmpDir+"/blamed_commits")

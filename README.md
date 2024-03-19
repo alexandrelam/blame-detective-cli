@@ -158,6 +158,7 @@ See the [open issues](https://github.com/alexandrelam/blame-detective-cli/issues
 - [ ] Cache query, generate folder name with a hash from the command
 - [ ] Add .blamedignore config file
 - [ ] Ignore big useless files
+- [ ] Readd loading bar
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

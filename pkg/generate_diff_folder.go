@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"sync"
 )
 
 func GenerateDiffFolder(rootDirectory string, commitFolderPath string) {
@@ -17,13 +18,17 @@ func GenerateDiffFolder(rootDirectory string, commitFolderPath string) {
 		return
 	}
 
+	var wg sync.WaitGroup
 	for _, commitFile := range files {
 		if commitFile.IsDir() {
 			continue
 		}
 
-		generateDiffFolderForCommit(commitFolderPath+"/"+commitFile.Name(), rootDirectory)
+		wg.Add(1)
+		go generateDiffFolderForCommit(commitFolderPath+"/"+commitFile.Name(), rootDirectory, &wg)
 	}
+
+	wg.Wait()
 
 	// Delete the commit folder
 	err = os.RemoveAll(commitFolderPath)
@@ -32,7 +37,8 @@ func GenerateDiffFolder(rootDirectory string, commitFolderPath string) {
 	}
 }
 
-func generateDiffFolderForCommit(commitFilePath string, directory string) {
+func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	// Open the file
 	file, err := os.Open(commitFilePath)
 	if err != nil {

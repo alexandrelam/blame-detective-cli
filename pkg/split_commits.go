@@ -92,7 +92,6 @@ func generateAllCommits(parsedFlags ParsedFlags, tmpFilePath string) {
 	}
 
 	command += " > " + tmpFilePath
-	fmt.Println(command)
 	exec.Command("sh", "-c", command).Run()
 }
 

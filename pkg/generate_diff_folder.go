@@ -7,9 +7,11 @@ import (
 	"os/exec"
 	"strings"
 	"sync"
+
+	"github.com/schollz/progressbar/v3"
 )
 
-func GenerateDiffFolder(rootDirectory string, commitFolderPath string) {
+func GenerateDiffFolder(rootDirectory string, commitFolderPath string, bar *progressbar.ProgressBar) {
 	// Iterate over each file in the folder
 	files, err := os.ReadDir(commitFolderPath)
 
@@ -25,7 +27,7 @@ func GenerateDiffFolder(rootDirectory string, commitFolderPath string) {
 		}
 
 		wg.Add(1)
-		go generateDiffFolderForCommit(commitFolderPath+"/"+commitFile.Name(), rootDirectory, &wg)
+		go generateDiffFolderForCommit(commitFolderPath+"/"+commitFile.Name(), rootDirectory, &wg, bar)
 	}
 
 	wg.Wait()
@@ -37,7 +39,7 @@ func GenerateDiffFolder(rootDirectory string, commitFolderPath string) {
 	}
 }
 
-func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sync.WaitGroup) {
+func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sync.WaitGroup, bar *progressbar.ProgressBar) {
 	defer wg.Done()
 	// Open the file
 	file, err := os.Open(commitFilePath)
@@ -101,6 +103,8 @@ func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sy
 				}
 			}
 		}
+
+		bar.Add(1)
 	}
 
 	// Check for any errors encountered during scanning

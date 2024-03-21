@@ -10,12 +10,26 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
-func Bar(tmpFilePath string) *progressbar.ProgressBar {
-	// Get the number of lines in the file
-	numLines, err := getNumberOfLinesInFile(tmpFilePath)
+func Bar(commitDirPath string) *progressbar.ProgressBar {
+	files, err := os.ReadDir(commitDirPath)
+
 	if err != nil {
 		fmt.Println("Error:", err)
 		return nil
+	}
+
+	numLines := 0
+
+	for _, file := range files {
+		filePath := commitDirPath + "/" + file.Name()
+		lines, err := getNumberOfLinesInFile(filePath)
+
+		if err != nil {
+			fmt.Println("Error:", err)
+			return nil
+		}
+
+		numLines += lines
 	}
 
 	// Create a progress bar

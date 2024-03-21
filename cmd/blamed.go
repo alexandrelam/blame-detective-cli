@@ -18,8 +18,11 @@ func main() {
 	// This generates a tmp file with all the diffs
 	var tmpDir = pkg.GenerateSplitCommitsFolder(parsedFlags)
 
-	// // We parse this file to reconstruct the folder structure
-	pkg.GenerateDiffFolder(tmpDir, tmpDir+"/blamed_commits")
+	// We create a progress bar
+	bar := pkg.Bar(tmpDir + "/blamed_commits")
+
+	// We parse this file to reconstruct the folder structure
+	pkg.GenerateDiffFolder(tmpDir, tmpDir+"/blamed_commits", bar)
 
 	// Open vscode with the folder
 	exec.Command("code", tmpDir).Run()

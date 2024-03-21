@@ -133,6 +133,14 @@ Blame Detective offers a range of powerful features to streamline the bug tracki
 View commits since a specific date by a particular authors:
 
 ```bash
+blamed -since "2023-01-01"
+```
+
+```bash
+blamed -since "2023-01-01 -ignore \.json"
+```
+
+```bash
 blamed -since "2023-01-01" -author "Alexandre Lam\|John Doe"
 ```
 

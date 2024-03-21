@@ -69,26 +69,26 @@ func generateSplitCommits(tmpCommitFilePath string, tmpDir string) {
 func generateAllCommits(parsedFlags ParsedFlags, tmpFilePath string) {
 	var command string = "git log  --pretty=format:%H"
 
-	if parsedFlags.from != "" {
-		command += " " + parsedFlags.from
-		if parsedFlags.to != "" {
-			command += ".." + parsedFlags.to
+	if parsedFlags.From != "" {
+		command += " " + parsedFlags.From
+		if parsedFlags.To != "" {
+			command += ".." + parsedFlags.To
 		} else {
 			command += "..HEAD"
 		}
 	}
 
-	if parsedFlags.since != "" {
-		command += " --since=" + parsedFlags.since
-		if parsedFlags.until != "" {
-			command += " --until=" + parsedFlags.until
+	if parsedFlags.Since != "" {
+		command += " --since=" + parsedFlags.Since
+		if parsedFlags.Until != "" {
+			command += " --until=" + parsedFlags.Until
 		} else {
 			command += " --until=now"
 		}
 	}
 
-	if parsedFlags.author != "" {
-		command += " --author=" + parsedFlags.author
+	if parsedFlags.Author != "" {
+		command += " --author=" + parsedFlags.Author
 	}
 
 	command += " > " + tmpFilePath

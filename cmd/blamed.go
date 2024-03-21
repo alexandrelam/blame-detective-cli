@@ -22,7 +22,7 @@ func main() {
 	bar := pkg.Bar(tmpDir + "/blamed_commits")
 
 	// We parse this file to reconstruct the folder structure
-	pkg.GenerateDiffFolder(tmpDir, tmpDir+"/blamed_commits", bar)
+	pkg.GenerateDiffFolder(tmpDir, tmpDir+"/blamed_commits", bar, parsedFlags.Ignore)
 
 	// Open vscode with the folder
 	exec.Command("code", tmpDir).Run()

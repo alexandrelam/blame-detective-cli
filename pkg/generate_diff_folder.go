@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 	"sync"
 
 	"github.com/schollz/progressbar/v3"
 )
 
-func GenerateDiffFolder(rootDirectory string, commitFolderPath string, bar *progressbar.ProgressBar) {
+func GenerateDiffFolder(rootDirectory string, commitFolderPath string, bar *progressbar.ProgressBar, ignoreRegex string) {
 	// Iterate over each file in the folder
 	files, err := os.ReadDir(commitFolderPath)
 
@@ -27,7 +28,7 @@ func GenerateDiffFolder(rootDirectory string, commitFolderPath string, bar *prog
 		}
 
 		wg.Add(1)
-		go generateDiffFolderForCommit(commitFolderPath+"/"+commitFile.Name(), rootDirectory, &wg, bar)
+		go generateDiffFolderForCommit(commitFolderPath+"/"+commitFile.Name(), rootDirectory, &wg, bar, ignoreRegex)
 	}
 
 	wg.Wait()
@@ -39,7 +40,7 @@ func GenerateDiffFolder(rootDirectory string, commitFolderPath string, bar *prog
 	}
 }
 
-func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sync.WaitGroup, bar *progressbar.ProgressBar) {
+func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sync.WaitGroup, bar *progressbar.ProgressBar, ignoreRegex string) {
 	defer wg.Done()
 	// Open the file
 	file, err := os.Open(commitFilePath)
@@ -57,6 +58,7 @@ func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sy
 	buf := []byte{}
 	scanner.Buffer(buf, 2048*1024)
 
+	shouldIgnoreCommit := false
 	for scanner.Scan() {
 		commitHash := scanner.Text()
 
@@ -73,10 +75,28 @@ func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sy
 		for _, line := range diffs {
 			if hasAuthor(line) {
 				author = getAuthor(line)
+				shouldIgnoreCommit = false
+			}
+
+			if ignoreRegex != "" && shouldIgnoreCommit {
+				continue
 			}
 
 			if hasFilePath(line) {
 				filePath = getCommitFilePath(line)
+
+				matched, err := regexp.MatchString(ignoreRegex, filePath)
+
+				fmt.Println("Matching regex:", ignoreRegex, "with file path:", filePath, "result:", matched)
+
+				if err != nil {
+					fmt.Println("Error matching regex:", err)
+				}
+
+				if matched {
+					shouldIgnoreCommit = true
+					continue
+				}
 			}
 
 			if hasDate(line) {

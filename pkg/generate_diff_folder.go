@@ -87,8 +87,6 @@ func generateDiffFolderForCommit(commitFilePath string, directory string, wg *sy
 
 				matched, err := regexp.MatchString(ignoreRegex, filePath)
 
-				fmt.Println("Matching regex:", ignoreRegex, "with file path:", filePath, "result:", matched)
-
 				if err != nil {
 					fmt.Println("Error matching regex:", err)
 				}
